@@ -1,7 +1,9 @@
 package logging
 
+// Importance levels int defer
 type LogLevel int
 
+// Importance levels constants
 const (
 	Trace LogLevel = iota
 	Debug
@@ -11,6 +13,7 @@ const (
 	None
 )
 
+// Logger interface. Different methods for each importance level
 type Logger interface {
 	Trace(string)
 	Tracef(string, ...interface{})
