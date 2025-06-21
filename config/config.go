@@ -1,5 +1,6 @@
 package config
 
+// Configuration interface
 type Configuration interface {
 	GetString(name string) (configureValue string, found bool)
 	GetInt(name string) (configureValue int, found bool)

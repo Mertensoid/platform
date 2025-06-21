@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// Loading configuration file and decoding it into DefaultConfig structure
 func Load(fileName string) (config Configuration, err error) {
 	var data []byte
 	data, err = os.ReadFile(fileName)
