@@ -4,8 +4,10 @@ import (
 	// "fmt"
 	"platform/config"
 	"platform/logging"
+	"platform/services"
 )
 
+// Logger usage for printing message from config file
 func writeMessage(logger logging.Logger, cfg config.Configuration) {
 	section, ok := cfg.GetSection("main")
 	if ok {
@@ -21,12 +23,16 @@ func writeMessage(logger logging.Logger, cfg config.Configuration) {
 }
 
 func main() {
-	var cfg config.Configuration
-	var err error
-	cfg, err = config.Load("config.json")
-	if err != nil {
-		panic(err)
+	services.RegisterDefaultServices()
+
+	services.Call(writeMessage)
+
+	val := struct {
+		message string
+		logging.Logger
+	}{
+		message: "Hello from the struct",
 	}
-	var logger logging.Logger = logging.NewDefaultLogger(cfg)
-	writeMessage(logger, cfg)
+	services.Populate(&val)
+	val.Logger.Debug(val.message)
 }
