@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"platform/logging"
 	"platform/pipeline"
-	"platform/services"
+	// "platform/services"
 )
 
 type LoggingResponseWriter struct {
@@ -26,16 +26,22 @@ func (w *LoggingResponseWriter) Write(b []byte) (int, error) {
 
 type LoggingComponent struct{}
 
+func (lc *LoggingComponent) ImplementsProcessRequestWithServices() {}
+
 func (lc *LoggingComponent) Init() {}
 
-func (lc *LoggingComponent) ProcessRequest(ctx *pipeline.ComponentContext,
-	next func(*pipeline.ComponentContext)) {
-	var logger logging.Logger
-	err := services.GetServiceForContext(ctx.Request.Context(), &logger)
-	if err != nil {
-		ctx.Error(err)
-		return
-	}
+func (lc *LoggingComponent) ProcessRequestWithServices(
+	ctx *pipeline.ComponentContext, next func(*pipeline.ComponentContext),
+	logger logging.Logger) {
+
+	// func (lc *LoggingComponent) ProcessRequest(ctx *pipeline.ComponentContext,
+	// 	next func(*pipeline.ComponentContext)) {
+	// 	var logger logging.Logger
+	// 	err := services.GetServiceForContext(ctx.Request.Context(), &logger)
+	// 	if err != nil {
+	// 		ctx.Error(err)
+	// 		return
+	// 	}
 
 	loggingWriter := LoggingResponseWriter{0, ctx.ResponseWriter}
 	ctx.ResponseWriter = &loggingWriter

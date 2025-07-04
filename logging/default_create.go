@@ -27,7 +27,7 @@ func NewDefaultLogger(cfg config.Configuration) Logger {
 	}
 }
 
-// Function to convert config file test to LogLevel type
+// Function to parse config file value to LogLevel type
 func LogLevelFromString(val string) (level LogLevel) {
 	switch strings.ToLower(val) {
 	case "debug":
