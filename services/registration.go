@@ -25,7 +25,7 @@ func AddSingleton(factoryFunc interface{}) (err error) {
 		wrapper := reflect.MakeFunc(factoryFuncVal.Type(),
 			func([]reflect.Value) []reflect.Value {
 				once.Do(func() {
-					results = invokeFunction(context.TODO(), factoryFuncVal)
+					results = invokeFunction(context.Background(), factoryFuncVal)
 				})
 				return results
 			})
