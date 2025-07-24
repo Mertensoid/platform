@@ -13,7 +13,17 @@ import (
 )
 
 func NewRouter(handlers ...HandlerEntry) *RouterComponent {
-	return &RouterComponent{generateRoutes(handlers...)}
+	routes := generateRoutes(handlers...)
+	var urlGen URLGenerator
+	services.GetService(&urlGen)
+	if urlGen == nil {
+		services.AddSingleton(func() URLGenerator {
+			return &routeUrlGenerator{routes: routes}
+		})
+	} else {
+		urlGen.AddRoutes(routes)
+	}
+	return &RouterComponent{routes: routes}
 }
 
 type RouterComponent struct {
@@ -45,6 +55,7 @@ func (router *RouterComponent) ProcessRequest(context *pipeline.ComponentContext
 	}
 	context.ResponseWriter.WriteHeader(http.StatusNotFound)
 }
+
 func (router *RouterComponent) invokeHandler(route Route, rawParams []string,
 	context *pipeline.ComponentContext) error {
 	paramVals, err := params.GetParametersFromRequest(context.Request,
