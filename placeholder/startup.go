@@ -16,7 +16,10 @@ func createPipeline() pipeline.RequestPipeline {
 		&basic.ErrorComponent{},
 		&basic.StaticFileComponent{},
 		// &SimpleMessageComponent{},
-		handling.NewRouter(handling.HandlerEntry{"", NameHandler{}}),
+		handling.NewRouter(
+			handling.HandlerEntry{"", NameHandler{}},
+			handling.HandlerEntry{"", DayHandler{}},
+		),
 	)
 }
 func Start() {
